@@ -70,10 +70,11 @@ rtems_task Init(
  boolean FTPD_enabled = FALSE;
 #endif
 
-/*
- *  Include the standard RTEMS Webserver Header file
- */
-#include <rtems_webserver.h>
+#if defined(USE_GOAHEAD_HTTPD) && !defined(RTEMS_POSIX_API)
+  #warning "GoAhead server requires POSIX API - switching to SHTTPD"
+  #undef USE_GOAHEAD_HTTPD
+  #undef USE_SIMPLE_HTTPD
+#endif
 
 /*
  *  Some data declarations that are server dependent
