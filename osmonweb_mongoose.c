@@ -163,7 +163,7 @@ int osmonweb_WriteBlock(
 
 const char *osmonweb_httpdname(void)
 {
-  return "Simple HTTPD";
+  return "Mongoose HTTPD";
 }
 
 const char *osmonweb_logoname(void)
