@@ -55,6 +55,8 @@
 #include <rtems.h>
 #include "htmlprintf.h"
 
+typedef bool boolean;
+
 /*
  * data structure to hold common display options like sorting, API/OBJ etc
  */
@@ -88,8 +90,13 @@ typedef struct {
  * Webserver adapter interface used by osmonweb
  */
 #if defined(USE_SIMPLE_HTTPD)
-  #include <shttpd/shttpd.h>
-  typedef struct shttpd_ctx *osmonweb_ctx_t;
+  	#include <shttpd/shttpd.h>
+  	typedef struct shttpd_ctx *osmonweb_ctx_t;
+#endif
+
+#if defined(USE_MONGOOSE_HTTPD)
+		#include <mghttpd/mongoose.h>
+  	typedef struct mg_context *osmonweb_ctx_t;
 #endif
 
 void *osmonweb_getCommonOptions(

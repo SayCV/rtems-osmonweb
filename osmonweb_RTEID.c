@@ -67,6 +67,9 @@
   #include <rtems/monitor.h>
 #endif
 
+#ifndef STATES_ALL_SET
+	#define STATES_ALL_SET                         0xfffff /* all states */
+#endif
 
 /*=========================================================================*\
 | Function:                                                                 |

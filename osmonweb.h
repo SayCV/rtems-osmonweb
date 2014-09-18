@@ -17,6 +17,7 @@
 #define _OSMONWEB_H
 
 #include <rtems.h>
+#include <rtems/score/statesimpl.h>
 /* 
  * interface function
  */

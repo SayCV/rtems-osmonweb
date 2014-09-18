@@ -8,9 +8,19 @@ BUILDDIR = build-$(RTEMS_BSP)
 PGM=$(BUILDDIR)/libosmonweb.a
 MANAGERS=all
 
+CPPFLAGS += -I. -Idirect -Idirect/rtems
+
+DEPFLAGS = -MT $@ -MD -MP -MF $(basename $@).d
+
+GCCFLAGS = -g -I . -B $(INSTALL_BASE) -specs bsp_specs -qrtems
+
+CFLAGS += $(DEPFLAGS) $(GCCFLAGS)
+
+# Simple HTTPD was renamed Mongoose
 # Application Configuration parameters
 USE_GOAHEAD=no
-USE_SIMPLE=yes
+USE_SIMPLE=no
+USE_MONGOOSE=yes
 USE_FTPD=yes
 USE_DEBUG=no
 
@@ -22,6 +32,9 @@ ifeq ($(USE_GOAHEAD),yes)
   C_FILES+=  osmonweb_goahead.c
 endif
 ifeq ($(USE_SIMPLE),yes)
+  C_FILES+=  osmonweb_shttpd.c shttpd_ext.c
+endif
+ifeq ($(USE_MONGOOSE),yes)
   C_FILES+=  osmonweb_shttpd.c shttpd_ext.c
 endif
 GEN_C_FILES= osmonweb_tar.c FilesystemImage.c \
@@ -59,6 +72,14 @@ ifeq ($(USE_SIMPLE),yes)
   HTTPD_LOGO    = SimpleHTTPD.png
   HTTPD_INDEX   = index_shttpd.html
   CFLAGS       += -DUSE_SIMPLE_HTTPD
+  LD_LIBS      += -lmghttpd
+endif
+
+ifeq ($(USE_MONGOOSE),yes)
+  HTTPD         = Simple HTTPD Web Server
+  HTTPD_LOGO    = SimpleHTTPD.png
+  HTTPD_INDEX   = index_shttpd.html
+  CFLAGS       += -DUSE_MONGOOSE_HTTPD
   LD_LIBS      += -lshttpd
 endif
 
@@ -103,7 +124,7 @@ stamp-gen-files: $(HTML_GEN) $(GEN_C_FILES) $(GEN_H_FILES)
 	# touch stamp-gen-files
 
 ${PGM}: $(SRCS) $(OBJS) $(LINK_FILES)
-	$(make-exe)
+	$(make-lib)
 
 $(BUILDDIR)/init.o: init.c osmonweb_tar.h FilesystemImage.h
 
@@ -132,6 +153,9 @@ osmonweb_tar.c osmonweb_tar.h: $(BUILDDIR) osmonweb_tar
 
 html/$(HTTPD_LOGO): htmlsrc/$(HTTPD_LOGO)
 	cp $< $@
+
+$(BUILDDIR)/%.o: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 # Install the program(s), appending _g or _p as appropriate.
 # for include files, just use $(INSTALL)
