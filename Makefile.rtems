@@ -41,7 +41,7 @@ ifeq ($(USE_SIMPLE),yes)
   C_FILES+=  osmonweb_shttpd.c shttpd_ext.c
 endif
 ifeq ($(USE_MONGOOSE),yes)
-  C_FILES+=  osmonweb_shttpd.c shttpd_ext.c
+  C_FILES+=  osmonweb_mongoose.c mongoose_ext.c
 endif
 GEN_C_FILES= osmonweb_tar.c FilesystemImage.c \
   osmonweb_RTEID_objs.c osmonweb_POSIX_objs.c osmonweb_ITRON_objs.c \
@@ -78,7 +78,7 @@ ifeq ($(USE_SIMPLE),yes)
   HTTPD_LOGO    = SimpleHTTPD.png
   HTTPD_INDEX   = index_shttpd.html
   CFLAGS       += -DUSE_SIMPLE_HTTPD
-  LD_LIBS      += -lmghttpd
+  LD_LIBS      += -lshttpd
 endif
 
 ifeq ($(USE_MONGOOSE),yes)
@@ -86,7 +86,7 @@ ifeq ($(USE_MONGOOSE),yes)
   HTTPD_LOGO    = SimpleHTTPD.png
   HTTPD_INDEX   = index_shttpd.html
   CFLAGS       += -DUSE_MONGOOSE_HTTPD
-  LD_LIBS      += -lshttpd
+  LD_LIBS      += -lmghttpd
 endif
 
 ifeq ($(USE_FTPD),yes)
