@@ -1,5 +1,11 @@
 include $(RTEMS_MAKEFILE_PATH)/Makefile.inc
 include $(RTEMS_MAKEFILE_PATH)/make/target.cfg
+#include $(RTEMS_SHARE_PATH)/make/lib.cfg
+define make-library
+$(RM) $@
+$(AR) $(ARFLAGS) $@ $(OBJS)
+$(RANLIB) $@
+endef
 
 INSTALL_BASE = $(RTEMS_MAKEFILE_PATH)/lib
 
@@ -124,7 +130,7 @@ stamp-gen-files: $(HTML_GEN) $(GEN_C_FILES) $(GEN_H_FILES)
 	# touch stamp-gen-files
 
 ${PGM}: $(SRCS) $(OBJS) $(LINK_FILES)
-	$(make-lib)
+	$(make-library)
 
 $(BUILDDIR)/init.o: init.c osmonweb_tar.h FilesystemImage.h
 
