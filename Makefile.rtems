@@ -101,7 +101,7 @@ endif
 
 DEFINES  +=
 CPPFLAGS +=
-## CFLAGS_LD += -Wl,--defsym -Wl,HeapSize=0xC0000 
+CFLAGS_LD += -Wl,--defsym -Wl,HeapSize=0xC0000 
 LD_PATHS  +=
 CFLAGS += -DUSE_MONITOR
 
@@ -129,7 +129,7 @@ stamp-gen-files: $(HTML_GEN) $(GEN_C_FILES) $(GEN_H_FILES)
 	echo $(HTML_GEN) $(GEN_C_FILES) $(GEN_H_FILES)
 	# touch stamp-gen-files
 
-${PGM}: $(SRCS) $(OBJS) $(LINK_FILES)
+${PGM}: $(SRCS) $(OBJS) $(LINK_FILES) FilesystemImage.c
 	$(make-library)
 
 $(BUILDDIR)/init.o: init.c osmonweb_tar.h FilesystemImage.h
