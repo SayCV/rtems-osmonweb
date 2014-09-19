@@ -82,9 +82,9 @@ ifeq ($(USE_SIMPLE),yes)
 endif
 
 ifeq ($(USE_MONGOOSE),yes)
-  HTTPD         = Simple HTTPD Web Server
+  HTTPD         = Mongoose HTTPD Web Server
   HTTPD_LOGO    = SimpleHTTPD.png
-  HTTPD_INDEX   = index_shttpd.html
+  HTTPD_INDEX   = mongoose_index.html
   CFLAGS       += -DUSE_MONGOOSE_HTTPD
   LD_LIBS      += -lmghttpd
 endif
@@ -143,7 +143,7 @@ FilesystemImage: $(BUILDDIR) rootfs/etc/host.conf rootfs/etc/hosts rootfs/index.
 FilesystemImage.c FilesystemImage.h: $(BUILDDIR) FilesystemImage
 	$(PROJECT_ROOT)/bin/rtems-bin2c FilesystemImage FilesystemImage
 
-rootfs/index.html: index_goahead.html index_shttpd.html
+rootfs/index.html: index_goahead.html index_shttpd.html mongoose_index.html
 	cp $(HTTPD_INDEX) $@
 
 osmonweb_tar: $(BUILDDIR) $(HTML_GEN)
