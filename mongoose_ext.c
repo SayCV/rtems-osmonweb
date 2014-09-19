@@ -12,6 +12,50 @@
 
 #include <stdio.h>
 
+#include <pthread.h>
+
+#if 1
+#define FUNCDBG()  do { \
+		printk( \
+		"[sayMDK]-> file: %s," \
+		" line %d," \
+		" function: %s\n", \
+		__FILE__, \
+		__LINE__, \
+		__FUNCTION__ \
+		); \
+	} while( 0 )
+#define FUNCDBG1( fmt, args ... )  do { \
+		\
+		printk( "[sayMDK]-> " ); \
+		printk( fmt, ## args ); \
+	} while( 0 )
+#define FUNCDBG2( fmt, args ... )  do { \
+		FUNCDBG(); \
+		printk( "[sayMDK]-> " ); \
+		printk( fmt, ## args ); \
+	} while( 0 )
+#else
+#define FUNCDBG()
+#define FUNCDBG1( fmt, args ... )
+#define FUNCDBG2( fmt, args ... )
+#endif
+
+#if defined(DEBUG)
+#define DEBUG_TRACE(x) do { \
+  flockfile(stdout); \
+  printf("*** %lu.%p.%s.%d: ", \
+         (unsigned long) time(NULL), (void *) pthread_self(), \
+         __func__, __LINE__); \
+  printf x; \
+  putchar('\n'); \
+  fflush(stdout); \
+  funlockfile(stdout); \
+} while (0)
+#else
+#define DEBUG_TRACE(x)
+#endif // DEBUG
+
 // Various events on which user-defined function is called by Mongoose.
 enum mg_event {
   MG_NEW_REQUEST,   // New HTTP request has arrived from the client
@@ -38,6 +82,7 @@ void example_mongoose_callback(
 {
   //const char *query;
   const struct mg_request_info *ri = request_info;
+  FUNCDBG();
 //if (event == MG_NEW_REQUEST) {
   if (strcmp(ri->uri, "/queries*")) {
   	return ;
@@ -56,7 +101,7 @@ void example_mongoose_callback(
   //if ( !query )
   //  query = "";
   /* fprintf( stderr, "RTEMS Request -%s-\n", query ); */
-
+	FUNCDBG();
   mg_printf( conn, START_HTML_BODY "<pre>" );
   if ( !strcmp( input_buf, "cpuuse_report" ) ) {
     rtems_cpu_usage_report_with_plugin(
@@ -87,6 +132,7 @@ void example_mongoose_callback(
       "error"
     );
   }
+  FUNCDBG();
   mg_printf( conn, "</pre>" END_HTML_BODY );
   /*arg->flags |= SHTTPD_END_OF_OUTPUT; */
 }
