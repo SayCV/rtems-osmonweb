@@ -138,7 +138,7 @@ $(BUILDDIR)/init.o: init.c osmonweb_tar.h FilesystemImage.h
 
 FilesystemImage: $(BUILDDIR) rootfs/etc/host.conf rootfs/etc/hosts rootfs/index.html
 	cd rootfs ; \
-	    tar cf ../FilesystemImage --exclude CVS --exclude .cvsignore .
+	    tar cf ../FilesystemImage --exclude CVS --exclude .cvsignore *
 
 FilesystemImage.c FilesystemImage.h: $(BUILDDIR) FilesystemImage
 	$(PROJECT_ROOT)/bin/rtems-bin2c FilesystemImage FilesystemImage
@@ -148,7 +148,7 @@ rootfs/index.html: index_goahead.html index_shttpd.html mongoose_index.html
 
 osmonweb_tar: $(BUILDDIR) $(HTML_GEN)
 	cd html ; \
-	    tar cf ../osmonweb_tar --exclude CVS --exclude .cvsignore .
+	    tar cf ../osmonweb_tar --exclude CVS --exclude .cvsignore *
 
 osmonweb_tar.c osmonweb_tar.h: $(BUILDDIR) osmonweb_tar
 	$(PROJECT_ROOT)/bin/rtems-bin2c osmonweb_tar osmonweb_tar
