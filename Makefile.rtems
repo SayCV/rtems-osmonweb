@@ -105,6 +105,9 @@ CFLAGS_LD += -Wl,--defsym -Wl,HeapSize=0xC0000
 LD_PATHS  +=
 CFLAGS += -DUSE_MONITOR
 
+CFLAGS += -B$(RTEMS_USR_INSTALL_ROOT)/lib/
+CFLAGS += -I$(RTEMS_USR_INSTALL_ROOT)/include
+LD_LIBS += libcsp.a
 
 ifneq ($(HTTPD_LOGO),)
   HTML_GEN += html/$(HTTPD_LOGO)
