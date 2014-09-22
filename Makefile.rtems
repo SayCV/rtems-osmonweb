@@ -25,8 +25,8 @@ CFLAGS += $(DEPFLAGS) $(GCCFLAGS)
 # Simple HTTPD was renamed Mongoose
 # Application Configuration parameters
 USE_GOAHEAD=no
-USE_SIMPLE=no
-USE_MONGOOSE=yes
+USE_SIMPLE=yes
+USE_MONGOOSE=no
 USE_FTPD=yes
 USE_DEBUG=no
 
